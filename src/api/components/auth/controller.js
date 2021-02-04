@@ -1,0 +1,65 @@
+const { nanoid } = require('nanoid')
+const jwt = require('jsonwebtoken')
+
+const TABLE = 'authentication'
+module.exports = (inejectedStore) => {
+
+    let store = inejectedStore
+
+    if(!store) {
+        store = require('../../../store/dummy')
+    }
+
+    const passwordInsert = async(data) => {
+        const authData = {
+            id: data.id
+        }
+
+        if(data.user_id){
+            authData.user_id = data.user_id
+        }
+
+        if(data.password){
+            authData.password = data.password
+        }
+
+        return await store.create(TABLE, authData)
+    }
+
+    const passwordUpdate = async (data) => {
+        const authData = {
+            user_id: data.user_id
+        }
+
+        if(data.password) {
+            authData.password = data.password
+        }
+
+        
+
+        return await store.update(TABLE, authData, data.id)
+    }
+
+    const createToken = async (user) => {
+
+        const { id, name, email } = user[0]
+
+        const playload = {
+            sub: id,
+            name,
+            email
+        }
+
+        const token = jwt.sign(playload, 'secret', {
+            expiresIn: '30m'
+        })
+
+        return token
+
+    }
+    return {
+        passwordInsert,
+        passwordUpdate,
+        createToken
+    }
+}
