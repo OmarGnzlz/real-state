@@ -4,7 +4,7 @@ const controller = require('./index')
 const response = require('../../../network/response')
 const passport = require('passport')
 
-require('../../strategies/basic')
+require('../../../strategies/basic')
 
 router.post('/login',  (req, res, next) => {
     

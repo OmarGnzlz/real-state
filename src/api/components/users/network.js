@@ -4,7 +4,7 @@ const controller = require('./index')
 const response = require('../../../network/response')
 const passport = require('passport')
 
-require('../../strategies/jwt')
+require('../../../strategies/jwt')
 
 router.get('/list', async(req, res) => {
     try {
@@ -29,7 +29,7 @@ router.post('/create', async(req, res) => {
         const newUser = await controller.createUser(req.body)
         response.success(req, res, newUser, 201)
     } catch (error) {
-        response.error(req, res, error.message, 505)
+        response.error(req, res, error.message, 500)
     }
 })
 

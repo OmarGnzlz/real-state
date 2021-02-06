@@ -1,6 +1,6 @@
 const passport = require('passport')
 const { Strategy } =require('passport-jwt')
-const store = require('../../store/mysql');
+const store = require('../store/mysql');
 
 
 const cookieExtractor = function(req) {

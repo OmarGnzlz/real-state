@@ -1,6 +1,6 @@
 const passport = require('passport')
 const {BasicStrategy} = require('passport-http')
-const store = require('../../store/mysql')
+const store = require('../store/mysql')
 const bcrypt = require('bcrypt')
 const boom = require('@hapi/boom')
 

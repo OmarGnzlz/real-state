@@ -87,7 +87,7 @@ const create =  async (table, data) => {
     }
 }
 
-const update = async (table, data, id) => {
+const update = async (table, id, data) => {
     
     try {
         const result = await connection.query(`UPDATE ${table} SET ? WHERE id= '${id}'`, data)
