@@ -58,6 +58,8 @@ router.delete('/delete/:id', async(req, res) => {
 router.put('/update/:id', (req, res, next) => {
     passport.authenticate('jwt', async(error, user) => {
         try {
+
+        
             const { id } = req.params
             
             if(!(user[0].id === id)){
@@ -67,7 +69,7 @@ router.put('/update/:id', (req, res, next) => {
             const result = await controller.userUpdate(id, req.body)
             response.success(req, res, result, 201)
         } catch (error) {
-            response.error(req, res, error.message, 505)
+            response.error(req, res, error.message, 401)
         }
     })(req, res , next)
 })

@@ -1,6 +1,7 @@
 const { nanoid } = require('nanoid')
 const auth = require('../auth/')
 const bcrypt = require('bcrypt')
+const { update } = require('../../../store/mysql')
 
 const TABLE = 'user'
 module.exports = (inejectedStore) => {
@@ -107,7 +108,7 @@ module.exports = (inejectedStore) => {
                 auth_id: user[0].auth_id
             }
 
-            return await store.update(TABLE, updatedUser, id)
+            return await store.update(TABLE, id, updatedUser)
         } catch (error) {
             throw new Error(error)
         }

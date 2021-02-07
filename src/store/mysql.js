@@ -1,10 +1,11 @@
 const mysql = require('mysql')
+const config = require('../config/index')
 
 const dfconfig = {
-    host:'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'real_state'
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
 }
 
 let connection

@@ -1,6 +1,7 @@
 const passport = require('passport')
 const { Strategy } =require('passport-jwt')
 const store = require('../store/mysql');
+const config = require('../config/index')
 
 
 const cookieExtractor = function(req) {
@@ -15,7 +16,7 @@ const cookieExtractor = function(req) {
 passport.use(
     new Strategy(
         {
-            secretOrKey: 'secret',
+            secretOrKey: config.jwt.secret,
             jwtFromRequest: cookieExtractor
         },
 

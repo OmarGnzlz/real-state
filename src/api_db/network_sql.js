@@ -68,7 +68,7 @@ router.put('/:table/:id', async (req, res) => {
 
         const { table, id } = req.params
 
-        const data = await store.get(table, id, req.body)
+        const data = await store.get(table,req.body, id)
 
         return data
     } catch (error) {

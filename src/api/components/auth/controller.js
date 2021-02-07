@@ -1,5 +1,5 @@
-const { nanoid } = require('nanoid')
 const jwt = require('jsonwebtoken')
+const config = require('../../../config/index')
 
 const TABLE = 'authentication'
 module.exports = (inejectedStore) => {
@@ -50,7 +50,7 @@ module.exports = (inejectedStore) => {
             email
         }
 
-        const token = jwt.sign(playload, 'secret', {
+        const token = jwt.sign(playload, config.jwt.secret, {
             expiresIn: '30m'
         })
 

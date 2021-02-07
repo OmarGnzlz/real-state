@@ -10,5 +10,5 @@ app.use(express.urlencoded({ extended: true }))
 
 router(app)
 
-app.listen(3001, console.log(`http://localhost:3001`))
+app.listen(config.mysql_api.port, console.log(`http://localhost${config.mysql_api.port}`))
 
