@@ -37,7 +37,7 @@ module.exports = (inejectedStore) => {
 
         
 
-        return await store.update(TABLE, authData, data.id)
+        return await store.update(TABLE, data.id, authData)
     }
 
     const createToken = async (user) => {
