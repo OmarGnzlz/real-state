@@ -42,7 +42,7 @@ module.exports = (inejectedStore) => {
 
     const createToken = async (user) => {
 
-        const { id, name, email } = user[0]
+        const { id, name, email } = user
 
         const playload = {
             sub: id,

@@ -1,5 +1,5 @@
 const { nanoid } = require('nanoid')
-const auth = require('../auth/')
+const auth = require('../auth')
 const bcrypt = require('bcrypt')
 
 
@@ -34,7 +34,7 @@ module.exports = (inejectedStore) => {
             }
 
             const userId = nanoid()
-            const authId = nanoid () 
+            const authId = nanoid() 
 
             const user = {
                 id : userId,
@@ -88,14 +88,15 @@ module.exports = (inejectedStore) => {
 
             const user = await store.get(TABLE, id)
 
+
             if(user.length === 0) { 
                 throw new Error("User does not exist")
             }
             
             if(body.password) {
                 await auth.passwordUpdate({
-                    id: user[0].auth_id,
-                    user_id: user[0].id,
+                    id: user.body[0].auth_id,
+                    user_id: user.body[0].id,
                     password: body.password
                 })
             }
@@ -105,7 +106,7 @@ module.exports = (inejectedStore) => {
                 userName: body.userName,
                 email: body.email,
                 phone: body.phone,
-                auth_id: user[0].auth_id
+                auth_id: user.body[0].auth_id
             }
 
             return await store.update(TABLE, id, updatedUser)

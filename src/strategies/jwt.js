@@ -1,6 +1,7 @@
 const passport = require('passport')
 const { Strategy } =require('passport-jwt')
-const store = require('../store/mysql');
+//const store = require('../store/mysql');
+const store = require('../store/remote-sql');
 const config = require('../config/index')
 
 
@@ -27,11 +28,10 @@ passport.use(
 
                 const user = await store.find('user', email )
 
-                
                 if(!user){
                     return cb(error, false)
                 }
-
+                
 
                 return cb(false, user) 
             } catch (error) {

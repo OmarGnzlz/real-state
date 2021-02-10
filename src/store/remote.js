@@ -16,7 +16,7 @@ function remoteDB  (host, port)  {
     }
     
     const find = (table, email) => {
-        return request('GET', `${table}/${email}`)
+        return request('GET', `find/${table}/${email}`)
     }
 
     const remove = (table, id) => {

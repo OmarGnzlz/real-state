@@ -5,7 +5,9 @@ const store = require('../store/mysql')
 
 router.get('/:table', async (req, res) => {
     try {
+        
         const data = await store.list(req.params.table)
+        console.log(req.params.table)
         response.success(req, res, data, 201)
     } catch (error) {
         response.error(req, res, error.message, 404)
@@ -25,13 +27,14 @@ router.get('/:table/:id', async (req, res) => {
     }
 })
 
-router.get('/:table/:email', async (req, res) => {
+router.get('/find/:table/:email', async (req, res) => {
     try {
 
-        const { table, email } = req.params
-
-        const data = await store.get(table, email)
-
+        const { table , email} = req.params
+        
+        
+        const data = await store.find(table, email)
+        
         response.success(req, res, data, 201)
     } catch (error) {
         response.error(req, res, error.message, 404)

@@ -62,7 +62,7 @@ router.put('/update/:id', (req, res, next) => {
         
             const { id } = req.params
             
-            if(!(user[0].id === id)){
+            if(!(user.body[0].id=== id)){
                 throw new Error("Not Allow")
             }
             
