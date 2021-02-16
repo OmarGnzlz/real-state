@@ -8,7 +8,7 @@ require('../../../strategies/jwt')
 
 router.get('/list', async(req, res) => {
     try {
-        const user = await controller.lisUsers()
+        const user = await controller.listUsers()
         response.success(req, res, user, 201)
     } catch (error) {
         response.error(req, res, error.message, 404)
@@ -44,26 +44,15 @@ router.delete('/delete/:id', async(req, res) => {
 })
 
 
-/* router.put('/update/:id',passport.authenticate('jwt', { session: false }) ,async(req, res) => {
-    try {
-        const { id } = req.params
-        
-        const user = await controller.userUpdate(id, req.body)
-        response.success(req, res, user, 201)
-    } catch (error) {
-        response.error(req, res, error.message, 505)
-    }
-}) */
 
 router.put('/update/:id', (req, res, next) => {
     passport.authenticate('jwt', async(error, user) => {
         try {
 
-        
             const { id } = req.params
             
             if(!(user.body[0].id=== id)){
-                throw new Error("Not Allow")
+                throw new Error("Not Allow" || error)
             }
             
             const result = await controller.userUpdate(id, req.body)

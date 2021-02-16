@@ -100,6 +100,33 @@ const update = async (table, id, data) => {
 }
 
 
+const listPost =  () => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT *
+        FROM post AS p INNER JOIN location as pl
+        ON p.location_id = pl.id
+        INNER JOIN statics AS s
+        ON p.statics_id = s.id`, (error, data) => {
+            if(error) { return reject(error)}
+            resolve(data)
+        })
+    })
+}
+
+const getPost =  (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT *
+        FROM post AS p INNER JOIN location as pl
+        ON p.location_id = pl.id
+        INNER JOIN statics AS s
+        ON p.statics_id = s.id
+        WHERE p.user_id = "${id}"`, (error, data) => {
+            if(error) { return reject(error)}
+            resolve(data)
+        })
+    })
+}
+
 
 module.exports = {
     list,
@@ -107,5 +134,7 @@ module.exports = {
     remove,
     create,
     update,
-    find
+    find,
+    listPost,
+    getPost
 }

@@ -12,7 +12,7 @@ module.exports = (inejectedStore) => {
         store = require('../../../store/dummy')
     }
 
-    const lisUsers = async() => {
+    const listUsers = async() => {
         return await store.list(TABLE)
     }
 
@@ -116,7 +116,7 @@ module.exports = (inejectedStore) => {
     }
 
     return {
-        lisUsers,
+        listUsers,
         getUser,
         createUser,
         deleteUser,

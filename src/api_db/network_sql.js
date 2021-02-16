@@ -6,9 +6,19 @@ const store = require('../store/mysql')
 router.get('/:table', async (req, res) => {
     try {
         
-        const data = await store.list(req.params.table)
-        console.log(req.params.table)
-        response.success(req, res, data, 201)
+        const { table } = req.params
+
+        
+        if (table === 'post') {
+            const data = await store.listPost()
+            
+            response.success(req, res, data, 201)
+        }else {
+
+            const data = await store.list(table)
+            
+            response.success(req, res, data, 201)
+        }
     } catch (error) {
         response.error(req, res, error.message, 404)
     }
@@ -18,10 +28,19 @@ router.get('/:table/:id', async (req, res) => {
     try {
 
         const { table, id } = req.params
+        console.log(table)
+        if(table === 'post'){
 
-        const data = await store.get(table, id)
+            const data = await store.getPost(id)
+            
+            response.success(req, res, data, 201)
+        }else {
 
-        response.success(req, res, data, 201)
+            const data = await store.get(table, id)
+
+            response.success(req, res, data, 201)
+        }
+
     } catch (error) {
         response.error(req, res, error.message, 404)
     }
@@ -75,6 +94,17 @@ router.put('/:table/:id', async (req, res) => {
         response.success(req, res, data, 201)
     } catch (error) {
         response.error(req, res, error.message, 500)
+    }
+})
+
+router.get('/post', async (req, res) => {
+    try {
+        
+        const data = await store.listPost()
+        
+        response.success(req, res, data, 201)
+    } catch (error) {
+        response.error(req, res, error.message, 404)
     }
 })
 

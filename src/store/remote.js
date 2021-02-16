@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { response } = require('express');
 
 function remoteDB  (host, port)  {
     const instance = axios.create({
@@ -30,6 +31,15 @@ function remoteDB  (host, port)  {
     const update = (table, id, data) => {
         return request('PUT', `${table}/${id}`, data)
     }
+    
+    const listPost = (table) => {
+        return request('GET', table)
+    }
+
+    const getPost = (table, id) => {
+        return request('GET', `${table}/${id}`)
+    }
+
 
 
     const request = async (method, url , data) => {
@@ -44,7 +54,7 @@ function remoteDB  (host, port)  {
             throw new Error(error)
         }
     }
-
+    
 
     return{
         list,
@@ -52,7 +62,9 @@ function remoteDB  (host, port)  {
         find,
         remove,
         create,
-        update
+        update,
+        listPost,
+        getPost
     }
 }
 
