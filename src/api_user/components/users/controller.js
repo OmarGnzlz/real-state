@@ -97,7 +97,6 @@ module.exports = (inejectedStore) => {
 
             return  {'System Message':'User succesfully delete'}
 
-            return user
         } catch (error) {
             throw new Error(error)
         }

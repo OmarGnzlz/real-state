@@ -82,9 +82,9 @@ module.exports = (injectedStore) => {
     const updatePost = async(id, body) => {
         try {
            
-            console.log(id)
+            
             const post = await store.getPost( id)
-            console.log(post.body[0].id)
+            
             
             if(body.state){
                 let dataLocation = {
