@@ -11,7 +11,7 @@ router.get('/:table', async (req, res) => {
         
         if (table === 'post') {
             const data = await store.listPost()
-            
+
             response.success(req, res, data, 201)
         }else {
 
@@ -28,13 +28,20 @@ router.get('/:table/:id', async (req, res) => {
     try {
 
         const { table, id } = req.params
-        console.log(table)
+        
+
         if(table === 'post'){
+
+            const data = await store.getPostUser(id)
+            
+            response.success(req, res, data, 201)
+        }else if (table === 'get') {
 
             const data = await store.getPost(id)
             
             response.success(req, res, data, 201)
-        }else {
+        }
+        else {
 
             const data = await store.get(table, id)
 
@@ -45,6 +52,7 @@ router.get('/:table/:id', async (req, res) => {
         response.error(req, res, error.message, 404)
     }
 })
+
 
 router.get('/find/:table/:email', async (req, res) => {
     try {

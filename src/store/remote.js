@@ -36,8 +36,12 @@ function remoteDB  (host, port)  {
         return request('GET', table)
     }
 
-    const getPost = (table, id) => {
+    const getPostUser = (table, id) => {
         return request('GET', `${table}/${id}`)
+    }
+    
+    const getPost = (id) => {
+        return request('GET', `get/${id}`)
     }
 
 
@@ -64,7 +68,8 @@ function remoteDB  (host, port)  {
         create,
         update,
         listPost,
-        getPost
+        getPostUser,
+        getPost,
     }
 }
 

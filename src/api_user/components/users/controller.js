@@ -21,7 +21,16 @@ module.exports = (inejectedStore) => {
             if(!id){
                 throw new Error("Missing data")
             }
-            return await store.get(TABLE, id)
+            
+            const user =  await store.get(TABLE, id)
+        
+
+            if(user.body.length === 0 ){ 
+                throw new Error("No such as User")
+            }
+
+            return user
+
         } catch (error) {
             throw new Error(error)
         }
@@ -70,11 +79,25 @@ module.exports = (inejectedStore) => {
             if(!id){
                 throw new Error("Missing data")
             }
-            await store.remove(TABLE, id)
+            const user = await store.get(TABLE, id)
+            
+            console.log(user.body[0])
 
-            return result = {
-                'System Message': "User succesfully delete"
+            let userID = user.body[0].id
+            let authID = user.body[0].auth_id
+
+            const ids = [authID, userID ]
+            const tables = ['authentication', 'user']
+
+            let result
+            for (let i = 0; ids.length > i; i++ ){
+                result = await store.remove(tables[i], ids[i])
+
             }
+
+            return  {'System Message':'User succesfully delete'}
+
+            return user
         } catch (error) {
             throw new Error(error)
         }
@@ -92,12 +115,14 @@ module.exports = (inejectedStore) => {
             if(user.length === 0) { 
                 throw new Error("User does not exist")
             }
+
+            const hashPassworrd = await bcrypt.hash(body.password, 8)
             
             if(body.password) {
                 await auth.passwordUpdate({
                     id: user.body[0].auth_id,
                     user_id: user.body[0].id,
-                    password: body.password
+                    password: hashPassworrd
                 })
             }
 

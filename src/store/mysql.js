@@ -102,25 +102,46 @@ const update = async (table, id, data) => {
 
 const listPost =  () => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT *
-        FROM post AS p INNER JOIN location as pl
-        ON p.location_id = pl.id
-        INNER JOIN statics AS s
-        ON p.statics_id = s.id`, (error, data) => {
+        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
+        p.location_id, p.statics_id,
+        l.state, l.city, l.address, l.latitude, l.longitude,
+        s.image, s.other_resources, s.video, s.url
+        FROM post AS p INNER JOIN location as l
+        ON l.id = p.location_id
+        INNER JOIN statics as s 
+        ON s.id = p.statics_id`, (error, data) => {
             if(error) { return reject(error)}
             resolve(data)
         })
     })
 }
 
+const getPostUser =  (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
+        l.state, l.city, l.address, l.latitude, l.longitude,
+        s.image, s.other_resources, s.video, s.url
+        FROM post AS p INNER JOIN location as l
+        ON l.id = p.location_id
+        INNER JOIN statics as s 
+        ON s.id = p.statics_id
+        WHERE p.user_id = "${id}"`, (error, data) => {
+            if(error) { return reject(error)}
+            resolve(data)
+        })
+    })
+}
 const getPost =  (id) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT *
-        FROM post AS p INNER JOIN location as pl
-        ON p.location_id = pl.id
-        INNER JOIN statics AS s
-        ON p.statics_id = s.id
-        WHERE p.user_id = "${id}"`, (error, data) => {
+        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
+        p.location_id, p.statics_id,
+        l.state, l.city, l.address, l.latitude, l.longitude,
+        s.image, s.other_resources, s.video, s.url
+        FROM post AS p INNER JOIN location as l
+        ON l.id = p.location_id
+        INNER JOIN statics as s 
+        ON s.id = p.statics_id
+        WHERE p.id = "${id}"`, (error, data) => {
             if(error) { return reject(error)}
             resolve(data)
         })
@@ -136,5 +157,6 @@ module.exports = {
     update,
     find,
     listPost,
-    getPost
+    getPost,
+    getPostUser,
 }

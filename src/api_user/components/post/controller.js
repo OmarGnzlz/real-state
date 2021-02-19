@@ -1,6 +1,7 @@
 const { nanoid } =require('nanoid')
 
 
+
 module.exports = (injectedStore) => {
     let store = injectedStore
 
@@ -15,7 +16,14 @@ module.exports = (injectedStore) => {
     }
 
     const getPost = async(id) => {
-        const post = await store.getPost('post', id)
+        const post = await store.getPostUser('post', id)
+
+        return post
+    }
+
+    const getAPost = async (id) => {
+        const post = await store.getPost(id)
+
 
         return post
     }
@@ -25,10 +33,8 @@ module.exports = (injectedStore) => {
             const postId = nanoid()
             const locationId = nanoid()
             const staticsId = nanoid()
-
-           let location = { }
-           let statics = { }
-
+            
+            
             if(body.state){
                 let dataLocation = {
                     id: locationId,
@@ -38,11 +44,11 @@ module.exports = (injectedStore) => {
                     longitude: body.longitude,
                     latitude: body.latitude
                 }
-
-                location = await store.create('location', dataLocation)
+                
+                await store.create('location', dataLocation)
                 
             }
-
+            
             if(body.image){
                 let dataStatics = {
                     id: staticsId,
@@ -51,10 +57,9 @@ module.exports = (injectedStore) => {
                     url: body.url,
                     other_resources: body.other
                 }
-
-                statics = await store.create('statics', dataStatics)  
+                await store.create('statics', dataStatics) 
             }
-
+            
             const dataPost = {
                 id: postId,
                 user_id: id,
@@ -65,21 +70,96 @@ module.exports = (injectedStore) => {
                 location_id: locationId,
                 statics_id: staticsId
             }
-
-
-            let post = await store.create('post', dataPost)
             
-            return { post, location , statics}
-
+            
+            return await store.create('post', dataPost)
+            
         } catch (error) {
             throw new Error(error)
         }
     }
 
+    const updatePost = async(id, body) => {
+        try {
+           
+            console.log(id)
+            const post = await store.getPost( id)
+            console.log(post.body[0].id)
+            
+            if(body.state){
+                let dataLocation = {
+                    id: post.body[0].location_id,
+                    state: body.state,
+                    city: body.city,
+                    address: body.address,
+                    longitude: body.longitude,
+                    latitude: body.latitude
+                }
+                
+                await store.update('location', dataLocation.id, dataLocation)
+                
+            }
+            
+            if(body.image){
+                let dataStatics = {
+                    id: post.body[0].statics_id,
+                    image: body.image,
+                    video: body.video,
+                    url: body.url,
+                    other_resources: body.other
+                }
+                
+                await store.update('statics', dataStatics.id, dataStatics)
+            }
+            
+            const dataPost = {
+                id: post.body[0].id,
+                user_id: post.body[0].user_id,
+                offer_type: body.offer,
+                realState_type: body.home_type,
+                title: body.title,
+                description: body.description,
+                location_id: post.body[0].location_id,
+                statics_id: post.body[0].statics_id
+            }
+            
+            return await store.update('post', dataPost.id, dataPost)
+            
+            
+        } catch (error) {
+            throw new Error(error)
+        }
+
+
+    }
+    
+     const deletePost = async (id) => {
+        
+        const post = await store.getPost(id)
+
+        const locationId = post.body[0].location_id
+        const staticsId = post.body[0].statics_id
+        const postId = post.body[0].id
+
+        const ids = [locationId, staticsId, postId ]
+        const tables = ['location', 'statics', 'post']
+
+        let result 
+        for(let i = 0; ids.length > i;i++ ) {
+            result = await store.remove(tables[i], ids[i])
+            
+        }
+        return {'System Message':'post succesfully delete'}
+     }
+    
     return {
         createPost,
+        updatePost,
         listPost,
-        getPost
+        getPost,
+        getAPost,
+        deletePost
+
     }
 
 }
