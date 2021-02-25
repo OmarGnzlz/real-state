@@ -27,6 +27,6 @@ router(app)
 
 app.use(errors)
 
-
+app.use('/public', express.static('public'))
 
 app.listen(config.post_api.port, console.log(`http://localhost:${config.post_api.port}`))

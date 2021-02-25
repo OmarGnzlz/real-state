@@ -3,8 +3,24 @@ const router = express.Router()
 const controller = require('./index')
 const response = require('../../../network/response')
 const passport = require('passport')
+const multer = require('multer')
+const path = require('path')
+
 
 require('../../../strategies/jwt')
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb ) => cb(null, 'public/files'),
+    filename: (req, file, cb) => {
+        cb(null, file.name + '-' + Date.now() + 
+        path.extname(file.originalname))
+    } 
+})
+
+
+const upload = multer({ storage: storage })
+
 
 router.get('/list', async(req, res) => {
     try {
@@ -36,17 +52,23 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/create/:id',(req, res, next) => {
+router.post('/create/:id', upload.fields([
+    {name: 'image' , maxCount: 8}, 
+    {name: 'video', maxCount: 1}]),
+    (req, res, next) => {
     passport.authenticate('jwt', async(error, user) => {
         try {
 
+            
             const { id } = req.params
 
             if(!(user.body[0].id === id)){
                 throw new Error('Not Allow' || error)
             }
+            const images = req.files.image
+            const video = req.files.video[0]
 
-            const result = await controller.createPost(id, req.body, 'create')
+            const result = await controller.createPost(id, req.body, images, video)
     
             response.success(req, res, result, 201)
         } catch (error) {
@@ -55,7 +77,10 @@ router.post('/create/:id',(req, res, next) => {
     })(req, res, next)
 })
 
-router.put('/update/:userId/:postId',(req, res, next) => {
+router.put('/update/:userId/:postId', upload.fields([
+    {name: 'image' , maxCount: 8}, 
+    {name: 'video', maxCount: 1}]),
+    (req, res, next) => {
     passport.authenticate('jwt', async(error, user) => {
         try {
 
@@ -65,7 +90,10 @@ router.put('/update/:userId/:postId',(req, res, next) => {
                 throw new Error('Not Allow' || error)
             }
 
-            const result = await controller.updatePost(postId, req.body)
+            const images = req.files.image
+            const video = req.files.video[0]
+
+            const result = await controller.updatePost(postId, req.body, images, video)
     
             response.success(req, res, result, 201)
         } catch (error) {

@@ -105,7 +105,7 @@ const listPost =  () => {
         connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
         p.location_id, p.statics_id,
         l.state, l.city, l.address, l.latitude, l.longitude,
-        s.image, s.other_resources, s.video, s.url
+        s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
         FROM post AS p INNER JOIN location as l
         ON l.id = p.location_id
         INNER JOIN statics as s 
@@ -120,7 +120,7 @@ const getPostUser =  (id) => {
     return new Promise((resolve, reject) => {
         connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
         l.state, l.city, l.address, l.latitude, l.longitude,
-        s.image, s.other_resources, s.video, s.url
+        s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
         FROM post AS p INNER JOIN location as l
         ON l.id = p.location_id
         INNER JOIN statics as s 
@@ -136,7 +136,7 @@ const getPost =  (id) => {
         connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
         p.location_id, p.statics_id,
         l.state, l.city, l.address, l.latitude, l.longitude,
-        s.image, s.other_resources, s.video, s.url
+        s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
         FROM post AS p INNER JOIN location as l
         ON l.id = p.location_id
         INNER JOIN statics as s 

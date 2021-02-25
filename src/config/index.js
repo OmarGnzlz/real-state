@@ -8,7 +8,7 @@ const config = {
         port: process.env.PORT_POST || 3002
     },
     jwt: {
-        secret: process.env.JWT_SECRET
+        secret: process.env.JWT_SECRET || 'secretkey'
     },
     mysql:{
         host: process.env.MYSQL_HOST || 'localhost',

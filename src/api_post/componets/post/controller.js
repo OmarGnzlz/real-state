@@ -28,12 +28,13 @@ module.exports = (injectedStore) => {
         return post
     }
 
-    const createPost = async(id, body) => {
+    const createPost = async(id, body, images, video) => {
         try {
             const postId = nanoid()
             const locationId = nanoid()
             const staticsId = nanoid()
             
+           console.log(images)
             
             if(body.state){
                 let dataLocation = {
@@ -49,14 +50,42 @@ module.exports = (injectedStore) => {
                 
             }
             
-            if(body.image){
+            let videoUrl = ""
+            let imageUrl = ""
+
+            if(images){
+                
+                let imagesArr = []
+                
+                if(images || video ){
+
+                    for(let i = 0; images.length > i; i++){
+                        
+                        imageUrl = `http://localhost:3002/public/files/${images[i].filename}`
+                        imagesArr.push(imageUrl)
+                    }
+                } 
+                
+
+                if(video){
+                    videoUrl = `http://localhost:3002/public/files/${video.filename}`
+                }
+                
                 let dataStatics = {
                     id: staticsId,
-                    image: body.image,
-                    video: body.video,
+                    image: imagesArr[0] ,
+                    image1: imagesArr[1] ,
+                    image2: imagesArr[2] ,
+                    image3: imagesArr[3],
+                    image4: imagesArr[4],
+                    image5: imagesArr[5],
+                    image6: imagesArr[6],
+                    image7: imagesArr[7],
+                    video: videoUrl,
                     url: body.url,
                     other_resources: body.other
                 }
+                
                 await store.create('statics', dataStatics) 
             }
             
@@ -67,6 +96,7 @@ module.exports = (injectedStore) => {
                 realState_type: body.home_type,
                 title: body.title,
                 description: body.description,
+                price: body.price,
                 location_id: locationId,
                 statics_id: staticsId
             }
@@ -79,7 +109,7 @@ module.exports = (injectedStore) => {
         }
     }
 
-    const updatePost = async(id, body) => {
+    const updatePost = async(id, body, images, video) => {
         try {
            
             
@@ -100,11 +130,35 @@ module.exports = (injectedStore) => {
                 
             }
             
-            if(body.image){
+            if(images || video){
+
+                let imagesArr = []
+                
+                if(images){
+
+                    for(let i = 0; images.length > i; i++){
+                        
+                        imageUrl = `http://localhost:3002/public/files/${images[i].filename}`
+                        imagesArr.push(imageUrl)
+                    }
+                } 
+                
+
+                if(video){
+                    videoUrl = `http://localhost:3002/public/files/${video.filename}`
+                }
+
                 let dataStatics = {
                     id: post.body[0].statics_id,
-                    image: body.image,
-                    video: body.video,
+                    image: imagesArr[0] ,
+                    image1: imagesArr[1] ,
+                    image2: imagesArr[2] ,
+                    image3: imagesArr[3],
+                    image4: imagesArr[4],
+                    image5: imagesArr[5],
+                    image6: imagesArr[6],
+                    image7: imagesArr[7],
+                    video: videoUrl,
                     url: body.url,
                     other_resources: body.other
                 }
