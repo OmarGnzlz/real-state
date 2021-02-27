@@ -52,6 +52,29 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.get('/location/:location', async (req, res) => {
+    try {
+        const post = await controller.filterLocation(req.params.location)
+        
+        response.success(req, res, post, 201)
+    } catch (error) {
+        response.error(req, res, error.message, 404)
+    }
+})
+
+router.get('/price/:range1/:range2', async (req, res) => {
+    try {
+        
+        const { range1, range2 } = req.params
+        
+        const posts = await controller.filterPrice(range1, range2)
+        
+        response.success(req, res, posts, 201)
+    } catch (error) {
+        response.error(req, res, error.message, 404)
+    }
+})
+
 router.post('/create/:id', upload.fields([
     {name: 'image' , maxCount: 8}, 
     {name: 'video', maxCount: 1}]),

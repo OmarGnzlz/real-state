@@ -28,7 +28,6 @@ router.get('/:table/:id', async (req, res) => {
     try {
 
         const { table, id } = req.params
-        
 
         if(table === 'post'){
 
@@ -63,6 +62,34 @@ router.get('/find/:table/:email', async (req, res) => {
         const data = await store.find(table, email)
         
         response.success(req, res, data, 201)
+    } catch (error) {
+        response.error(req, res, error.message, 404)
+    }
+})
+
+router.get('/filter/location/:location', async(req, res) => {
+    try {
+        
+        const { location } = req.params
+        
+        const data = await store.searchLocation(location)
+
+        response.success(req, res, data, 201)
+
+    } catch (error) {
+        response.error(req, res, error.message, 404)
+    }
+})
+
+router.get('/filter/price/:range1/:range2', async(req, res) => {
+    try {
+        
+        const { range1, range2 } = req.params
+
+        const data = await store.searchPrice(range1, range2)
+
+        response.success(req, res, data, 201)
+
     } catch (error) {
         response.error(req, res, error.message, 404)
     }

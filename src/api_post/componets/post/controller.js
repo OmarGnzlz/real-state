@@ -21,11 +21,22 @@ module.exports = (injectedStore) => {
         return post
     }
 
-    const getAPost = async (id) => {
+    const getAPost = async(id) => {
         const post = await store.getPost(id)
 
-
         return post
+    }
+
+    const filterLocation = async(location) => {
+        const posts = await store.searchLocation(location)
+        
+        return posts
+    }
+    
+    const filterPrice = async(range1, range2) => {
+        const posts = await store.searchPrice(range1, range2)
+        
+        return posts
     }
 
     const createPost = async(id, body, images, video) => {
@@ -173,6 +184,7 @@ module.exports = (injectedStore) => {
                 realState_type: body.home_type,
                 title: body.title,
                 description: body.description,
+                price: body.price,
                 location_id: post.body[0].location_id,
                 statics_id: post.body[0].statics_id
             }
@@ -212,8 +224,9 @@ module.exports = (injectedStore) => {
         listPost,
         getPost,
         getAPost,
-        deletePost
-
+        deletePost,
+        filterLocation,
+        filterPrice
     }
 
 }

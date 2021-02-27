@@ -44,10 +44,19 @@ function remoteDB  (host, port)  {
         return request('GET', `get/${id}`)
     }
 
+    const searchLocation = (location) => {
+        return request('GET',  `filter/location/${location}`)
+    }
+    
+    const searchPrice = (range1, range2) => {
+        return request('GET',  `filter/price/${range1}/${range2}`)
+    }
+
 
 
     const request = async (method, url , data) => {
         try {
+
             const response = await instance({
                 method,
                 url,
@@ -70,6 +79,8 @@ function remoteDB  (host, port)  {
         listPost,
         getPostUser,
         getPost,
+        searchLocation,
+        searchPrice
     }
 }
 

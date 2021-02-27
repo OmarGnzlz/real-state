@@ -103,7 +103,7 @@ const update = async (table, id, data) => {
 const listPost =  () => {
     return new Promise((resolve, reject) => {
         connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
-        p.location_id, p.statics_id,
+        p.location_id, p.statics_id, p.price,
         l.state, l.city, l.address, l.latitude, l.longitude,
         s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
         FROM post AS p INNER JOIN location as l
@@ -118,7 +118,7 @@ const listPost =  () => {
 
 const getPostUser =  (id) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
+        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description, p.price,
         l.state, l.city, l.address, l.latitude, l.longitude,
         s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
         FROM post AS p INNER JOIN location as l
@@ -134,7 +134,7 @@ const getPostUser =  (id) => {
 const getPost =  (id) => {
     return new Promise((resolve, reject) => {
         connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
-        p.location_id, p.statics_id,
+        p.location_id, p.statics_id, p.price,
         l.state, l.city, l.address, l.latitude, l.longitude,
         s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
         FROM post AS p INNER JOIN location as l
@@ -142,6 +142,40 @@ const getPost =  (id) => {
         INNER JOIN statics as s 
         ON s.id = p.statics_id
         WHERE p.id = "${id}"`, (error, data) => {
+            if(error) { return reject(error)}
+            resolve(data)
+        })
+    })
+}
+
+const searchLocation =  (location) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
+        p.location_id, p.statics_id, p.price,
+        l.state, l.city, l.address, l.latitude, l.longitude,
+        s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
+        FROM post AS p INNER JOIN location as l
+        ON l.id = p.location_id
+        INNER JOIN statics as s 
+        ON s.id = p.statics_id
+        WHERE l.state = '${location}' || l.city = '${location}'`, (error, data) => {
+            if(error) { return reject(error)}
+            resolve(data)
+        })
+    })
+}
+
+const searchPrice =  (range1, range2) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT p.id, p.user_id, p.offer_type, p.realState_type, p.title, p.description,
+        p.location_id, p.statics_id, p.price,
+        l.state, l.city, l.address, l.latitude, l.longitude,
+        s.image, s.image1, s.image2, s.image3, s.image4, s.image5, s.image6, s.image7, s.other_resources, s.video, s.url
+        FROM post AS p INNER JOIN location as l
+        ON l.id = p.location_id
+        INNER JOIN statics as s 
+        ON s.id = p.statics_id
+        WHERE p.price BETWEEN ${range1} AND ${range2}`, (error, data) => {
             if(error) { return reject(error)}
             resolve(data)
         })
@@ -159,4 +193,6 @@ module.exports = {
     listPost,
     getPost,
     getPostUser,
+    searchLocation,
+    searchPrice
 }
