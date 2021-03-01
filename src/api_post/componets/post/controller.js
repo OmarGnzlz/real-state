@@ -1,6 +1,26 @@
 const { nanoid } =require('nanoid')
+const AWS = require('aws-sdk')
+const { v4: uuidv4 } = require('uuid')
 
 
+const s3 = new AWS.S3({
+    credentials: {
+        accessKeyId: 'AKIAISZIZVIBJHNDLHKA',
+        secretAccessKey: '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',
+        region: 'us-east-2'
+    }
+}) 
+
+const uploadS3 =  async (params) => {
+    const response =  await s3.upload(params,  (error, data) => {
+        if(error){
+            throw new Error(error)
+        }
+        return data.Location
+    }).promise()
+
+    return response
+}
 
 module.exports = (injectedStore) => {
     let store = injectedStore
@@ -39,14 +59,15 @@ module.exports = (injectedStore) => {
         return posts
     }
 
+  
+    
     const createPost = async(id, body, images, video) => {
         try {
             const postId = nanoid()
             const locationId = nanoid()
             const staticsId = nanoid()
             
-           console.log(images)
-            
+
             if(body.state){
                 let dataLocation = {
                     id: locationId,
@@ -59,40 +80,81 @@ module.exports = (injectedStore) => {
                 
                 await store.create('location', dataLocation)
                 
-            }
+            }  
             
-            let videoUrl = ""
-            let imageUrl = ""
-
-            if(images){
+            
+            if(images ){
                 
-                let imagesArr = []
+                let imageFileArr = []
+                let imageTypeArr = []
+                let imageNameArr = []
+                let imageURLArr = []
+                let videoUrl = ''   
                 
-                if(images || video ){
 
-                    for(let i = 0; images.length > i; i++){
-                        
-                        imageUrl = `http://localhost:3002/public/files/${images[i].filename}`
-                        imagesArr.push(imageUrl)
+                for(let i = 0; images.length > i; i++){
+                    
+                    let imageFile =images[i].originalname.split('.')
+                    imageFileArr.push(imageFile)
+                    
+                    let imageName = imageFileArr[i][0]
+                    imageNameArr.push(imageName)
+
+                    let imageType = imageFileArr[i][imageFile.length - 1]
+                    imageTypeArr.push(imageType)
+
+                    let keyS3 = `${uuidv4()}.${imageNameArr[i]}.${imageTypeArr[i]}`
+                    
+                    const params = {
+                        Bucket: 'real-state-app2021',
+                        Key: keyS3,
+                        Body: images[i].buffer
                     }
-                } 
                 
 
-                if(video){
-                    videoUrl = `http://localhost:3002/public/files/${video.filename}`
-                }
+                    let dataToS3 = await uploadS3(params)
+
+                    imageURLArr.push(dataToS3.Location)
+                    
+                }  
+
+                console.log(imageURLArr)
+
+                /* if(video){
+
+                    videoFile = video.originalname.split('.')
+                    videoType = videoFile[videoFile.length - 1]
+
+                    const params = {
+                        Bucket: 'real-state-app2021',
+                        Key: `${uuidv4()}.${videoType}`,
+                        Body: video.buffer
+                    }
+
+                    s3.upload(params, async (error, data) => {
+                        if(error){
+                            console.log(error)
+                            throw new Error(error)
+                        }
+                        
+                        return videoUrl = await data
+
+                    })
+                        
+                } */
                 
+
                 let dataStatics = {
                     id: staticsId,
-                    image: imagesArr[0] ,
-                    image1: imagesArr[1] ,
-                    image2: imagesArr[2] ,
-                    image3: imagesArr[3],
-                    image4: imagesArr[4],
-                    image5: imagesArr[5],
-                    image6: imagesArr[6],
-                    image7: imagesArr[7],
-                    video: videoUrl,
+                    image: imageURLArr[0],
+                    image1: imageURLArr[1],
+                    image2: imageURLArr[2],
+                    image3: imageURLArr[3],
+                    image4: imageURLArr[4],
+                    image5: imageURLArr[5],
+                    image6: imageURLArr[6],
+                    image7: imageURLArr[7],
+                    video: videoUrl.Location,
                     url: body.url,
                     other_resources: body.other
                 }
@@ -143,32 +205,53 @@ module.exports = (injectedStore) => {
             
             if(images || video){
 
-                let imagesArr = []
-                
-                if(images){
+                let imageFileArr = []
+                let imageTypeArr = []
+                let imageNameArr = []
+                let imageURLArr = []
+                let videoUrl = ''
+  
+                for(let i = 0; images.length > i; i++){
+                    
+                    let imageFile =images[i].originalname.split('.')
+                    imageFileArr.push(imageFile)
+                    
+                    let imageName = imageFileArr[i][0]
+                    imageNameArr.push(imageName)
 
-                    for(let i = 0; images.length > i; i++){
-                        
-                        imageUrl = `http://localhost:3002/public/files/${images[i].filename}`
-                        imagesArr.push(imageUrl)
+                    let imageType = imageFileArr[i][imageFile.length - 1]
+                    imageTypeArr.push(imageType)
+
+                    let keyS3 = `${uuidv4()}.${imageNameArr[i]}.${imageTypeArr[i]}`
+                    
+                    const params = {
+                        Bucket: 'real-state-app2021',
+                        Key: keyS3,
+                        Body: images[i].buffer
                     }
+                
+
+                    let dataToS3 = await uploadS3(params)
+
+                    imageURLArr.push(dataToS3.Location)
+                    
                 } 
                 
 
-                if(video){
+                /* if(video){
                     videoUrl = `http://localhost:3002/public/files/${video.filename}`
-                }
+                } */
 
                 let dataStatics = {
                     id: post.body[0].statics_id,
-                    image: imagesArr[0] ,
-                    image1: imagesArr[1] ,
-                    image2: imagesArr[2] ,
-                    image3: imagesArr[3],
-                    image4: imagesArr[4],
-                    image5: imagesArr[5],
-                    image6: imagesArr[6],
-                    image7: imagesArr[7],
+                    image: imageURLArr[0] ,
+                    image1: imageURLArr[1] ,
+                    image2: imageURLArr[2] ,
+                    image3: imageURLArr[3],
+                    image4: imageURLArr[4],
+                    image5: imageURLArr[5],
+                    image6: imageURLArr[6],
+                    image7: imageURLArr[7],
                     video: videoUrl,
                     url: body.url,
                     other_resources: body.other
