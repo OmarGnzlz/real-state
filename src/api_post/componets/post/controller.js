@@ -1,12 +1,13 @@
 const { nanoid } =require('nanoid')
 const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid')
+const config = require('../../../config/index')
 
 
 const s3 = new AWS.S3({
     credentials: {
-        accessKeyId: 'AKIAISZIZVIBJHNDLHKA',
-        secretAccessKey: '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',
+        accessKeyId: config.aws_key.keyId,
+        secretAccessKey: config.aws_key.secretKey,
         region: 'us-east-2'
     }
 }) 

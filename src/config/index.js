@@ -19,6 +19,10 @@ const config = {
     mysql_api:{
         host: process.env.MYSQL_API_HOST || 'localhost',
         port: process.env.MYSQL_API_PORT || 3001
+    },
+    aws_key:{
+        keyId: process.env.ACCESS_KEY,
+        secretKey: process.env.SECRET_KEY
     }
 }
 
