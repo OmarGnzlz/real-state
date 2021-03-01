@@ -1,12 +1,12 @@
 ## API-Rest Real State
 
-_This is a personal project and the main purpose of it was to apply all the skills that I acquired at Platzi Master program.
+_This is a personal project and the main purpose of it was to apply all the skills that I acquired at Platzi Master program._
 
-_The project is about a real state web application where you can search for a property whether you want to buy it or rent it, you will be able to search by location and range of price and also you will be able to post a property whether for sale or rent.
+_The project is about a real state web application where you can search for a property whether you want to buy it or rent it, you will be able to search by location and range of price and also you will be able to post a property whether for sale or rent._
 
 ## Installation and initialization
 
-_If you have already cloned the repository, you will be able to install all the dependencies with the following command.
+_If you have already cloned the repository, you will be able to install all the dependencies with the following command._
 
 
 ```
@@ -26,7 +26,7 @@ npm install
 
 ## Author
 
-- ** Omar Gonzalez ** _Backend Developer_ 
+- **Omar Gonzalez** _Backend Developer_ 
 
 ## License
 
