@@ -9,7 +9,7 @@ module.exports = (inejectedStore) => {
     let store = inejectedStore
 
     if(!store) {
-        store = require('../../../store/dummy')
+        store = require('../../../store/pgdb')
     }
 
     const listUsers = async() => {

@@ -3,9 +3,10 @@ const config = require('../config/index')
 
 const dfconfig = {
     host: config.mysql.host,
+    port: 3304,
     user: config.mysql.user,
     password: config.mysql.password,
-    database: config.mysql.database
+    database: config.mysql.database,
 }
 
 let connection

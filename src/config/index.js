@@ -11,10 +11,10 @@ const config = {
         secret: process.env.JWT_SECRET || 'secretkey'
     },
     mysql:{
-        host: process.env.MYSQL_HOST || 'localhost',
-        user: process.env.MYSQL_USER || 'root',
-        password: process.env.MYSQL_PASSWORD || 'password',
-        database: process.env.MYSQL_DATABASE || 'real_state'
+        host: process.env.MYSQL_HOST || '',
+        user: process.env.MYSQL_USER || 'admin',
+        password: process.env.MYSQL_PASSWORD || '',
+        database: process.env.MYSQL_DATABASE || 'real_state',
     },
     mysql_api:{
         host: process.env.MYSQL_API_HOST || 'localhost',
